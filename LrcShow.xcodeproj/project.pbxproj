@@ -12,6 +12,8 @@
 		456A259A1AE34750005EA242 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 456A25991AE34750005EA242 /* Images.xcassets */; };
 		456A259D1AE34750005EA242 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 456A259B1AE34750005EA242 /* MainMenu.xib */; };
 		456A25A91AE34750005EA242 /* LrcShowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 456A25A81AE34750005EA242 /* LrcShowTests.m */; };
+		456A25B31AE3477F005EA242 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 456A25B21AE3477F005EA242 /* ScriptingBridge.framework */; };
+		456A25B71AE35AA8005EA242 /* LSLyrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 456A25B61AE35AA8005EA242 /* LSLyrics.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,10 @@
 		456A25A21AE34750005EA242 /* LrcShowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LrcShowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		456A25A71AE34750005EA242 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		456A25A81AE34750005EA242 /* LrcShowTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LrcShowTests.m; sourceTree = "<group>"; };
+		456A25B21AE3477F005EA242 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		456A25B41AE347A8005EA242 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		456A25B51AE35AA8005EA242 /* LSLyrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSLyrics.h; sourceTree = "<group>"; };
+		456A25B61AE35AA8005EA242 /* LSLyrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSLyrics.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				456A25B31AE3477F005EA242 /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +65,7 @@
 		456A25861AE34750005EA242 = {
 			isa = PBXGroup;
 			children = (
+				456A25B21AE3477F005EA242 /* ScriptingBridge.framework */,
 				456A25911AE34750005EA242 /* LrcShow */,
 				456A25A51AE34750005EA242 /* LrcShowTests */,
 				456A25901AE34750005EA242 /* Products */,
@@ -76,11 +84,14 @@
 		456A25911AE34750005EA242 /* LrcShow */ = {
 			isa = PBXGroup;
 			children = (
+				456A25B41AE347A8005EA242 /* iTunes.h */,
 				456A25941AE34750005EA242 /* AppDelegate.h */,
 				456A25951AE34750005EA242 /* AppDelegate.m */,
 				456A25991AE34750005EA242 /* Images.xcassets */,
 				456A259B1AE34750005EA242 /* MainMenu.xib */,
 				456A25921AE34750005EA242 /* Supporting Files */,
+				456A25B51AE35AA8005EA242 /* LSLyrics.h */,
+				456A25B61AE35AA8005EA242 /* LSLyrics.m */,
 			);
 			path = LrcShow;
 			sourceTree = "<group>";
@@ -211,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				456A25981AE34750005EA242 /* main.m in Sources */,
+				456A25B71AE35AA8005EA242 /* LSLyrics.m in Sources */,
 				456A25961AE34750005EA242 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
