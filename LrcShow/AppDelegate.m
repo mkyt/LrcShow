@@ -11,7 +11,7 @@
 #import "LSLyrics.h"
 
 #define TIMER_INTERVAL_POOLING  1.
-#define TIMER_INTERVAL_PLAYBACK 0.01
+#define TIMER_INTERVAL_PLAYBACK 0.2
 
 typedef NS_ENUM(NSUInteger, AppState) {
     StatePooling,
@@ -30,7 +30,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
 
 @property (weak) IBOutlet NSPanel *window;
 @property (weak) IBOutlet NSTextField *trackInfoTextField;
-@property (weak) IBOutlet NSTextField *lyricsTextField;
+@property (unsafe_unretained) IBOutlet NSTextView *lyricsTextView;
 
 @end
 
@@ -48,19 +48,19 @@ typedef NS_ENUM(NSUInteger, AppState) {
     iTunesFileTrack *currentTrack = [[iTunes currentTrack] get]; // [iTunes currentTrack] returns iTunesTrack, not iTunesFileTrack, hence cannot get file path
     if (!currentTrack) {
         trackInfoTextField.stringValue = @"Stopped";
-        lyricsTextField.stringValue = @"";
+        lyricsTextView.string = @"";
         return;
     }
     iTunesFileTrack *track = (iTunesFileTrack *)[[iTunes currentTrack] get];
     trackInfoTextField.stringValue = [self trackDescription:track];
+    databaseID = [track databaseID];
     NSURL *url = [track location];
     lyrics = [LSLyrics lyricsWithMusicFileURL:url];
     if (lyrics) {
-        lyricsTextField.stringValue = [[lyrics lines] joinedElement];
+        lyricsTextView.string = [[lyrics lines] joinedElement];
     } else {
-        lyricsTextField.stringValue = @"";
+        lyricsTextView.string = @"";
     }
-    
 }
 
 - (void)pooling:(NSTimer *)t {
@@ -75,16 +75,32 @@ typedef NS_ENUM(NSUInteger, AppState) {
 
 - (void)playing:(NSTimer *)t {
     iTunesEPlS playerState = [iTunes playerState];
+    static lyrics_pos_t pos;
     if (playerState == iTunesEPlSStopped) {
         [timer invalidate];
         timer = nil;
         trackInfoTextField.stringValue = @"Stopped";
-        lyricsTextField.stringValue = @"";
+        lyricsTextView.string = @"";
         [self transitToState:StatePooling];
     } else {
         NSInteger dbID = [[iTunes currentTrack] databaseID];
         if (dbID != databaseID) { // track changed
             [self trackChanged];
+            return;
+        }
+        if (lyrics != nil && [lyrics kind] != LyricsKindUnsynced) { // need to update markings
+            double t = [iTunes playerPosition];
+            BOOL updated = [lyrics positionForTime:t pos:&pos];
+            if (updated) {
+                lyrics_marking_t markings;
+                [lyrics markingsForPos:&pos markings:&markings];
+                [lyricsTextView.textStorage addAttribute:NSForegroundColorAttributeName value:[NSColor grayColor] range:markings.finished_lines];
+                [lyricsTextView.textStorage addAttribute:NSForegroundColorAttributeName value:[NSColor orangeColor] range:markings.current_line];
+                [lyricsTextView.textStorage addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:markings.future_lines];
+                if ([lyrics kind] == LyricsKindKaraoke) {
+                    [lyricsTextView.textStorage addAttribute:NSForegroundColorAttributeName value:[NSColor grayColor] range:markings.done_in_current_line];
+                }
+            }
         }
     }
 }
@@ -120,6 +136,6 @@ typedef NS_ENUM(NSUInteger, AppState) {
 }
 
 @synthesize trackInfoTextField;
-@synthesize lyricsTextField;
+@synthesize lyricsTextView;
 
 @end
