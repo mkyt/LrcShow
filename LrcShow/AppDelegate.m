@@ -10,11 +10,11 @@
 #import "iTunes.h"
 #import "LSLyrics.h"
 
-#define TIMER_INTERVAL_POOLING  1.
+#define TIMER_INTERVAL_POLLING  1.
 #define TIMER_INTERVAL_PLAYBACK 0.2
 
 typedef NS_ENUM(NSUInteger, AppState) {
-    StatePooling,
+    StatePolling,
     StatePlaying
 };
 
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
     }
 }
 
-- (void)pooling:(NSTimer *)t {
+- (void)polling:(NSTimer *)t {
     iTunesEPlS playerState = [iTunes playerState];
     if (playerState != iTunesEPlSStopped) {
         [timer invalidate];
@@ -81,7 +81,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
         timer = nil;
         trackInfoTextField.stringValue = @"Stopped";
         lyricsTextView.string = @"";
-        [self transitToState:StatePooling];
+        [self transitToState:StatePolling];
     } else {
         NSInteger dbID = [[iTunes currentTrack] databaseID];
         if (dbID != databaseID) { // track changed
@@ -113,9 +113,9 @@ typedef NS_ENUM(NSUInteger, AppState) {
     double interval;
     SEL sel;
     switch (state) {
-        case StatePooling:
-            interval = TIMER_INTERVAL_POOLING;
-            sel = @selector(pooling:);
+        case StatePolling:
+            interval = TIMER_INTERVAL_POLLING;
+            sel = @selector(polling:);
             break;
         case StatePlaying:
             interval = TIMER_INTERVAL_PLAYBACK;
@@ -128,7 +128,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-    [self transitToState:StatePooling];
+    [self transitToState:StatePolling];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
