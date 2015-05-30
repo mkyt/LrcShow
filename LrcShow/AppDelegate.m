@@ -29,7 +29,6 @@ typedef NS_ENUM(NSUInteger, AppState) {
 }
 
 @property (weak) IBOutlet NSPanel *window;
-@property (weak) IBOutlet NSTextField *trackInfoTextField;
 @property (unsafe_unretained) IBOutlet NSTextView *lyricsTextView;
 
 @end
@@ -47,12 +46,12 @@ typedef NS_ENUM(NSUInteger, AppState) {
 - (void)trackChanged {
     iTunesFileTrack *currentTrack = [[iTunes currentTrack] get]; // [iTunes currentTrack] returns iTunesTrack, not iTunesFileTrack, hence cannot get file path
     if (!currentTrack) {
-        trackInfoTextField.stringValue = @"Stopped";
+        window.title = @"Stopped";
         lyricsTextView.string = @"";
         return;
     }
     iTunesFileTrack *track = (iTunesFileTrack *)[[iTunes currentTrack] get];
-    trackInfoTextField.stringValue = [self trackDescription:track];
+    window.title = [self trackDescription:track];
     databaseID = [track databaseID];
     NSURL *url = [track location];
     lyrics = [LSLyrics lyricsWithMusicFileURL:url];
@@ -79,7 +78,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
     if (playerState == iTunesEPlSStopped) {
         [timer invalidate];
         timer = nil;
-        trackInfoTextField.stringValue = @"Stopped";
+        window.title = @"Stopped";
         lyricsTextView.string = @"";
         [self transitToState:StatePolling];
     } else {
@@ -135,7 +134,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
     // Insert code here to tear down your application
 }
 
-@synthesize trackInfoTextField;
+@synthesize window;
 @synthesize lyricsTextView;
 
 @end
