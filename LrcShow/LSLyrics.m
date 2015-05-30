@@ -279,10 +279,36 @@ typedef struct elem_index_entry_s {
         entry = elem_index[lo];
         //NSLog(@"time :%.3f, elem_time: %.3f line: %ld, elem: %ld", time, entry.time, entry.line_idx, entry.elem_idx);
     }
+    NSUInteger char_idx = 0;
+    if (kind == LyricsKindKaraoke && entry.line_idx >= 0 && entry.elem_idx >= 0) {
+        LSLyricsElements *elems = lines[entry.line_idx];
+        LSLyricsElement *elem = elems[entry.elem_idx];
+        NSUInteger cnt = [elem length];
+        double startTime = [elem timeCode];
+        NSLog(@"Reached, cnt=%lud elem=\"%@\"", cnt, elem);
+        if (cnt > 1) {
+            double nextTime = -1;
+            if (entry.elem_idx < elems.count - 1) {
+                LSLyricsElement *nextElem = elems[entry.elem_idx+1];
+                nextTime = nextElem.timeCode;
+            } else if (entry.line_idx < lines.count - 1) { // last elem in the current line
+                LSLyricsElements *nextLine = lines[entry.line_idx+1];
+                LSLyricsElement *nextElem = nextLine[0];
+                nextTime = nextElem.timeCode;
+            }
+            if (nextTime >= time) {
+                double durPerChar = (nextTime - startTime) / cnt;
+                char_idx = (NSUInteger)((time - startTime) / durPerChar);
+                NSLog(@"charIdx: %ld", char_idx);
+            }
+        }
+    }
     if (pos->elem_index != entry.elem_idx ||
-        pos->line != entry.line_idx) {
+        pos->line != entry.line_idx ||
+        pos->char_index_in_elem != char_idx) {
         pos->elem_index = entry.elem_idx;
         pos->line = entry.line_idx;
+        pos->char_index_in_elem = char_idx;
         return YES;
     } else {
         return NO;
@@ -308,8 +334,9 @@ typedef struct elem_index_entry_s {
         NSUInteger future_start = cur_line_range.location + cur_line_range.length;
         markings->future_lines = NSMakeRange(future_start, end_pos - future_start);
         LSLyricsElement *elem = [elems objectAtIndex:elem_idx];
-        markings->done_in_current_line = NSMakeRange(cur_line_range.location, elem.range.location - cur_line_range.location);
-        markings->undone_in_current_line = NSMakeRange(elem.range.location, cur_line_range.length - (elem.range.location - cur_line_range.location));
+        NSUInteger offset = pos->char_index_in_elem;
+        markings->done_in_current_line = NSMakeRange(cur_line_range.location, elem.range.location - cur_line_range.location + offset);
+        markings->undone_in_current_line = NSMakeRange(elem.range.location + offset, cur_line_range.length - (elem.range.location - cur_line_range.location + offset));
     } else if (kind == LyricsKindSynced) {
         LSLyricsElement *elem = [lines objectAtIndex:line_idx];
         NSRange cur_line_range = elem.range;

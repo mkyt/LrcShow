@@ -49,6 +49,7 @@ typedef NS_ENUM(NSUInteger, LyricsElementsContent) {
 typedef struct lyrics_pos_s {
     NSInteger line;
     NSInteger elem_index;
+    NSInteger char_index_in_elem;
 } lyrics_pos_t;
 
 typedef struct lyrics_marking_s {
