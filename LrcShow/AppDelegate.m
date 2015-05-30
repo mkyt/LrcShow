@@ -157,6 +157,10 @@ typedef NS_ENUM(NSUInteger, AppState) {
     // Insert code here to tear down your application
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+    return YES;
+}
+
 @synthesize window;
 @synthesize lyricsTextView;
 @synthesize scrollView;
