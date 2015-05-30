@@ -14,6 +14,7 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="lyricsTextView" destination="fyo-OC-ua4" id="VeP-lf-eO6"/>
+                <outlet property="scrollView" destination="hHG-JN-2gO" id="jxz-Il-8Rl"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>

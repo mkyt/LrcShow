@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
 
 @property (weak) IBOutlet NSPanel *window;
 @property (unsafe_unretained) IBOutlet NSTextView *lyricsTextView;
+@property (weak) IBOutlet NSScrollView *scrollView;
 
 @end
 
@@ -72,6 +73,27 @@ typedef NS_ENUM(NSUInteger, AppState) {
     }
 }
 
+- (void)scrollToLine:(NSInteger)line {
+    NSClipView* clipView = [scrollView contentView];
+    CGFloat clipHeight = scrollView.frame.size.height;
+    CGFloat textHeight = clipView.documentRect.size.height;
+    // NSLog(@"clip: %f, text: %f", clipHeight, textHeight);
+    if (clipHeight >= textHeight) return; // whole text is displayed
+    NSUInteger lines = lyrics.lines.count;
+    CGFloat lineHeight = textHeight / lines;
+    NSUInteger l = (NSUInteger)(clipHeight / lineHeight / 2);
+    CGFloat to;
+    if (line < l) to = 0.0;
+    else if (line + l >= lines) to = textHeight - clipHeight;
+    else to = lineHeight * (0.5 + line) - clipHeight / 2;
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:0.5];
+    NSPoint ori = [clipView bounds].origin;
+    ori.y = to;
+    [[clipView animator] setBoundsOrigin:ori];
+    [NSAnimationContext endGrouping];
+}
+
 - (void)playing:(NSTimer *)t {
     iTunesEPlS playerState = [iTunes playerState];
     static lyrics_pos_t pos;
@@ -91,6 +113,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
             double t = [iTunes playerPosition];
             BOOL updated = [lyrics positionForTime:t pos:&pos];
             if (updated) {
+                [self scrollToLine:pos.line];
                 lyrics_marking_t markings;
                 [lyrics markingsForPos:&pos markings:&markings];
                 [lyricsTextView.textStorage addAttribute:NSForegroundColorAttributeName value:[NSColor grayColor] range:markings.finished_lines];
@@ -136,5 +159,6 @@ typedef NS_ENUM(NSUInteger, AppState) {
 
 @synthesize window;
 @synthesize lyricsTextView;
+@synthesize scrollView;
 
 @end
