@@ -45,13 +45,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
 }
 
 - (void)trackChanged {
-    iTunesFileTrack *currentTrack = [[iTunes currentTrack] get]; // [iTunes currentTrack] returns iTunesTrack, not iTunesFileTrack, hence cannot get file path
-    if (!currentTrack) {
-        window.title = @"Stopped";
-        lyricsTextView.string = @"";
-        return;
-    }
-    iTunesFileTrack *track = (iTunesFileTrack *)[[iTunes currentTrack] get];
+    iTunesFileTrack *track = (iTunesFileTrack *)[[iTunes currentTrack] get];  // [iTunes currentTrack] returns iTunesTrack, not iTunesFileTrack, hence cannot get file path
     window.title = [self trackDescription:track];
     databaseID = [track databaseID];
     NSURL *url = [track location];
@@ -107,6 +101,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
         NSInteger dbID = [[iTunes currentTrack] databaseID];
         if (dbID != databaseID) { // track changed
             [self trackChanged];
+            pos.line = -2;
             return;
         }
         if (lyrics != nil && [lyrics kind] != LyricsKindUnsynced) { // need to update markings
