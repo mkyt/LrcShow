@@ -285,7 +285,6 @@ typedef struct elem_index_entry_s {
         LSLyricsElement *elem = elems[entry.elem_idx];
         NSUInteger cnt = [elem length];
         double startTime = [elem timeCode];
-        NSLog(@"Reached, cnt=%lud elem=\"%@\"", cnt, elem);
         if (cnt > 1) {
             double nextTime = -1;
             if (entry.elem_idx < elems.count - 1) {
@@ -299,7 +298,6 @@ typedef struct elem_index_entry_s {
             if (nextTime >= time) {
                 double durPerChar = (nextTime - startTime) / cnt;
                 char_idx = (NSUInteger)((time - startTime) / durPerChar);
-                NSLog(@"charIdx: %ld", char_idx);
             }
         }
     }
