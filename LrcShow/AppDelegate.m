@@ -11,7 +11,7 @@
 #import "LSLyrics.h"
 
 #define TIMER_INTERVAL_POLLING  1.
-#define TIMER_INTERVAL_PLAYBACK 0.2
+#define TIMER_INTERVAL_PLAYBACK 0.1
 
 typedef NS_ENUM(NSUInteger, AppState) {
     StatePolling,
@@ -26,6 +26,8 @@ typedef NS_ENUM(NSUInteger, AppState) {
     NSInteger databaseID; // databaseID of the current track
     LSLyrics *lyrics;
     double duration; // duration of the current track
+    double prevPlayTime;
+    NSDate *prevPlayTimeDate;
 }
 
 @property (weak) IBOutlet NSPanel *window;
@@ -55,6 +57,8 @@ typedef NS_ENUM(NSUInteger, AppState) {
     } else {
         lyricsTextView.string = @"";
     }
+    prevPlayTime = -1;
+    prevPlayTimeDate = nil;
 }
 
 - (void)polling:(NSTimer *)t {
@@ -106,6 +110,14 @@ typedef NS_ENUM(NSUInteger, AppState) {
         }
         if (lyrics != nil && [lyrics kind] != LyricsKindUnsynced) { // need to update markings
             double t = [iTunes playerPosition];
+            // playerPosition is updated only about once per second
+            if (playerState == iTunesEPlSPlaying && t == prevPlayTime) { // not updated
+                double diff = [prevPlayTimeDate timeIntervalSinceNow];
+                t -= diff;
+            } else { // updated
+                prevPlayTime = t;
+                prevPlayTimeDate = [NSDate date];
+            }
             BOOL updated = [lyrics positionForTime:t pos:&pos];
             if (updated) {
                 [self scrollToLine:pos.line];
