@@ -158,6 +158,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
     // Insert code here to initialize your application
     iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
     [self transitToState:StatePolling];
+    [window setLevel:NSNormalWindowLevel];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
