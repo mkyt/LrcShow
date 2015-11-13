@@ -54,6 +54,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
     lyrics = [LSLyrics lyricsWithMusicFileURL:url];
     if (lyrics) {
         lyricsTextView.string = [[lyrics lines] joinedElement];
+        lyricsTextView.textColor = [NSColor whiteColor];
     } else {
         lyricsTextView.string = @"";
     }
