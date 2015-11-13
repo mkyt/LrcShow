@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -672,7 +673,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="283" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="283" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -684,8 +685,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" id="fyo-OC-ua4">
-                                    <rect key="frame" x="0.0" y="0.0" width="238" height="310"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="238" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <animations/>
                                     <color key="textColor" red="0.94276751893939392" green="0.94276751893939392" blue="0.94276751893939392" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.068165708803812716" green="0.067812518602756694" blue="0.068518899004868739" alpha="0.0" colorSpace="calibratedRGB"/>
                                     <size key="minSize" width="283" height="360"/>
@@ -694,7 +696,7 @@
                                         <fragment content=" ">
                                             <attributes>
                                                 <color key="NSColor" red="0.94276751893939392" green="0.94276751893939392" blue="0.94276751893939392" alpha="1" colorSpace="calibratedRGB"/>
-                                                <font key="NSFont" size="11" name="HelveticaNeue-Light"/>
+                                                <font key="NSFont" metaFont="smallSystem"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                             </attributes>
                                         </fragment>
@@ -704,15 +706,19 @@
                                     <size key="maxSize" width="463" height="10000000"/>
                                 </textView>
                             </subviews>
+                            <animations/>
                             <color key="backgroundColor" red="0.1731376262626263" green="0.1731376262626263" blue="0.1731376262626263" alpha="0.0" colorSpace="calibratedRGB"/>
                         </clipView>
+                        <animations/>
                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="CRj-zG-6hz">
                             <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                             <autoresizingMask key="autoresizingMask"/>
+                            <animations/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="GE6-UF-1iS">
-                            <rect key="frame" x="223" y="1" width="16" height="133"/>
+                            <rect key="frame" x="267" y="0.0" width="16" height="360"/>
                             <autoresizingMask key="autoresizingMask"/>
+                            <animations/>
                         </scroller>
                     </scrollView>
                 </subviews>
@@ -722,6 +728,7 @@
                     <constraint firstItem="hHG-JN-2gO" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="jtV-Eg-g3X"/>
                     <constraint firstItem="hHG-JN-2gO" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="k09-ln-soR"/>
                 </constraints>
+                <animations/>
             </view>
             <point key="canvasLocation" x="94.5" y="272"/>
         </window>
