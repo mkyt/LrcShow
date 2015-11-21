@@ -681,11 +681,11 @@
                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hHG-JN-2gO">
                         <rect key="frame" x="0.0" y="0.0" width="283" height="360"/>
                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="uOu-gd-gX8">
-                            <rect key="frame" x="1" y="1" width="238" height="133"/>
+                            <rect key="frame" x="0.0" y="0.0" width="283" height="360"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" id="fyo-OC-ua4">
-                                    <rect key="frame" x="0.0" y="0.0" width="238" height="360"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="283" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <animations/>
                                     <color key="textColor" red="0.94276751893939392" green="0.94276751893939392" blue="0.94276751893939392" alpha="1" colorSpace="calibratedRGB"/>
@@ -696,8 +696,8 @@
                                         <fragment content=" ">
                                             <attributes>
                                                 <color key="NSColor" red="0.94276751893939392" green="0.94276751893939392" blue="0.94276751893939392" alpha="1" colorSpace="calibratedRGB"/>
-                                                <font key="NSFont" metaFont="smallSystem"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                <font key="NSFont" metaFont="system" size="12"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="2" lineHeightMultiple="1.1000000000000001"/>
                                             </attributes>
                                         </fragment>
                                     </attributedString>
