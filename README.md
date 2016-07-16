@@ -1,5 +1,7 @@
 # LrcShow
 
+<img src="https://raw.github.com/wiki/mkyt/LrcShow/images/ss.jpg" width="340px">
+
 ### これは何?
 iTunesで再生中の曲の（同期）歌詞を表示します．
 
