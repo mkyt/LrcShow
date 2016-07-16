@@ -10,7 +10,6 @@
 		454FF1301D39F10A007163D4 /* iTunesWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 454FF12F1D39F10A007163D4 /* iTunesWrapper.m */; };
 		454FF1331D39F88D007163D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454FF1321D39F88D007163D4 /* AppDelegate.swift */; };
 		454FF1351D39FFAE007163D4 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454FF1341D39FFAE007163D4 /* Lyrics.swift */; };
-		456A25981AE34750005EA242 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 456A25971AE34750005EA242 /* main.m */; };
 		456A259A1AE34750005EA242 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 456A25991AE34750005EA242 /* Images.xcassets */; };
 		456A259D1AE34750005EA242 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 456A259B1AE34750005EA242 /* MainMenu.xib */; };
 		456A25A91AE34750005EA242 /* LrcShowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 456A25A81AE34750005EA242 /* LrcShowTests.m */; };
@@ -35,7 +34,6 @@
 		454FF1341D39FFAE007163D4 /* Lyrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
 		456A258F1AE34750005EA242 /* LrcShow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LrcShow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		456A25931AE34750005EA242 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		456A25971AE34750005EA242 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		456A25991AE34750005EA242 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		456A259C1AE34750005EA242 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		456A25A21AE34750005EA242 /* LrcShowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LrcShowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,7 +101,6 @@
 			isa = PBXGroup;
 			children = (
 				456A25931AE34750005EA242 /* Info.plist */,
-				456A25971AE34750005EA242 /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -225,7 +222,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				456A25981AE34750005EA242 /* main.m in Sources */,
 				454FF1351D39FFAE007163D4 /* Lyrics.swift in Sources */,
 				454FF1331D39F88D007163D4 /* AppDelegate.swift in Sources */,
 				454FF1301D39F10A007163D4 /* iTunesWrapper.m in Sources */,

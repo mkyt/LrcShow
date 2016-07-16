@@ -17,6 +17,7 @@ enum AppState {
     case Playback
 }
 
+@NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     let iTunes = iTunesWrapper.sharedInstance()!
