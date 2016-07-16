@@ -2,14 +2,15 @@
 //  AppDelegate.swift
 //  LrcShow
 //
-//  Created by 清田正紘 on 2016/07/16.
-//  Copyright © 2016年 Juzbox. All rights reserved.
+//  Created by Masahiro Kiyota on 2016/07/16.
+//  Copyright © 2016 Juzbox. All rights reserved.
 //
 
 import Cocoa
 
 let PollingInterval = 1.0
 let PlayingInterval = 0.1
+let AnimationDuration = 0.5
 
 enum AppState {
     case Polling
@@ -92,7 +93,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
                 let pos = lyrics.position(time: time)
                 if prevPosition == nil || (prevPosition != nil && pos != prevPosition!) {
-                    if prevPosition == nil || (pos.line != prevPosition?.line) {
+                    if prevPosition == nil || (pos.line != prevPosition!.line) {
                         scroll(toLine: pos.line)
                     }
                     let marking = lyrics.marking(position: pos)
@@ -146,7 +147,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             to = lineHeight * CGFloat(lineNo) - clipHeight / 2
         }
         NSAnimationContext.beginGrouping()
-        NSAnimationContext.currentContext().duration = 0.5
+        NSAnimationContext.currentContext().duration = AnimationDuration
         var origin = clipView.bounds.origin
         origin.y = to
         clipView.animator().setBoundsOrigin(origin)

@@ -2,8 +2,8 @@
 //  Lyrics.swift
 //  LrcShow
 //
-//  Created by 清田正紘 on 2016/07/16.
-//  Copyright © 2016年 Juzbox. All rights reserved.
+//  Created by Masahiro Kiyota on 2016/07/16.
+//  Copyright © 2016 Juzbox. All rights reserved.
 //
 
 import Foundation
@@ -55,10 +55,14 @@ class LyricsElement: LyricsChunk {
 
 class LyricsLine: LyricsChunk {
     var elements: [LyricsElement]
-    init(karaokeLine line:String, startPos p: Int) {
+    
+    init?(karaokeLine line:String, startPos p: Int) {
         elements = []
         let re = try! NSRegularExpression(pattern: "\\[(\\d{2}):(\\d{2}):(\\d{2})\\]([^\\[]*)", options: [])
         let matches = re.matchesInString(line, options: [], range: NSMakeRange(0, line.characters.count))
+        if matches.count == 0 {
+            return nil
+        }
         var cur = p
         for match in matches {
             let elem = LyricsElement(line: line, match: match, startPos: cur)
@@ -66,19 +70,28 @@ class LyricsLine: LyricsChunk {
             cur += elem.text.characters.count
         }
     }
-    init(syncedLine line: String, startPos p: Int) {
+    
+    init?(syncedLine line: String, startPos p: Int) {
         elements = []
         let re = try! NSRegularExpression(pattern: "^\\[(\\d{2}):(\\d{2}):(\\d{2})\\](.*)$", options: [])
-        let match = re.firstMatchInString(line, options: [], range: NSMakeRange(0, line.characters.count))!
-        elements.append(LyricsElement(line: line, match: match, startPos: p))
+        let match = re.firstMatchInString(line, options: [], range: NSMakeRange(0, line.characters.count))
+        if let match = match {
+            elements.append(LyricsElement(line: line, match: match, startPos: p))
+        } else {
+            return nil
+        }
+        
     }
+    
     init(unsyncedLine line: String) {
         elements = []
         elements.append(LyricsElement(text: line, startPos: 0))
     }
+    
     var text: String {
         return elements.map{ $0.text }.joinWithSeparator("")
     }
+    
     var timeCode: Double {
         if elements.count == 0 {
             return 0
@@ -86,6 +99,7 @@ class LyricsLine: LyricsChunk {
             return elements[0].timeCode
         }
     }
+    
     var range: NSRange {
         if elements.count == 0 {
             return NSMakeRange(0, 0)
@@ -212,8 +226,6 @@ class LyricsFile {
             res.finishedChunkInCurrentLine = NSMakeRange(line.range.location, elem.range.location - line.range.location + offset)
             res.futureChunkInCurrentLine = NSMakeRange(elem.range.location + offset, line.range.length - (elem.range.location - line.range.location + offset))
         }
-        print("position:")
-        print(res)
         return res
     }
 }
@@ -224,9 +236,11 @@ class KaraokeLyricsFile: LyricsFile {
         var p = 0
         for rawLine in rawContent.componentsSeparatedByString("\n") {
             let line = LyricsLine(karaokeLine: rawLine, startPos: p)
-            lines.append(line)
-            p += line.text.characters.count
-            p += 1 // new line
+            if let line = line {
+                lines.append(line)
+                p += line.text.characters.count
+                p += 1 // new line
+            }
         }
         for (i, line) in lines.enumerate() {
             for (j, elem) in line.elements.enumerate() {
@@ -244,9 +258,11 @@ class SyncedLyricsFile: LyricsFile {
         var p = 0
         for rawLine in rawContent.componentsSeparatedByString("\n") {
             let line = LyricsLine(syncedLine: rawLine, startPos: p)
-            lines.append(line)
-            p += line.text.characters.count
-            p += 1 // new line
+            if let line = line {
+                lines.append(line)
+                p += line.text.characters.count
+                p += 1 // new line
+            }
         }
         for (i, line) in lines.enumerate() {
             searchIndex.append((line.timeCode, i, 0))
