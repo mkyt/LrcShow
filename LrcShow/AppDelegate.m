@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "iTunes.h"
 #import "LSLyrics.h"
+#import "iTunesWrapper.h"
 
 #define TIMER_INTERVAL_POLLING  1.
 #define TIMER_INTERVAL_PLAYBACK 0.1
@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
 
 @interface AppDelegate ()
 {
-    iTunesApplication *iTunes;
+    iTunesWrapper *iTunes;
     AppState state;
     NSTimer *timer;
     NSInteger databaseID; // databaseID of the current track
@@ -38,19 +38,10 @@ typedef NS_ENUM(NSUInteger, AppState) {
 
 @implementation AppDelegate
 
-- (NSString *)trackDescription:(iTunesFileTrack *)track {
-    NSString *title = [track name];
-    NSString *album = [track album];
-    NSString *artist = [track artist];
-    // FIXME
-    return [NSString stringWithFormat:@"%@ - %@ - %@", title, artist, album];
-}
-
 - (void)trackChanged {
-    iTunesFileTrack *track = (iTunesFileTrack *)[[iTunes currentTrack] get];  // [iTunes currentTrack] returns iTunesTrack, not iTunesFileTrack, hence cannot get file path
-    window.title = [self trackDescription:track];
-    databaseID = [track databaseID];
-    NSURL *url = [track location];
+    window.title = [iTunes trackDescription];
+    databaseID = [iTunes databaseID];
+    NSURL *url = [iTunes location];
     lyrics = [LSLyrics lyricsWithMusicFileURL:url];
     if (lyrics) {
         lyricsTextView.string = [[lyrics lines] joinedElement];
@@ -63,8 +54,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
 }
 
 - (void)polling:(NSTimer *)t {
-    iTunesEPlS playerState = [iTunes playerState];
-    if (playerState != iTunesEPlSStopped) {
+    if ([iTunes state] == PlayerStatePlaying) {
         [timer invalidate];
         timer = nil;
         [self trackChanged];
@@ -94,16 +84,16 @@ typedef NS_ENUM(NSUInteger, AppState) {
 }
 
 - (void)playing:(NSTimer *)t {
-    iTunesEPlS playerState = [iTunes playerState];
     static lyrics_pos_t pos;
-    if (playerState == iTunesEPlSStopped) {
+    PlayerState playerState = [iTunes state];
+    if (playerState == PlayerStateStopped) {
         [timer invalidate];
         timer = nil;
         window.title = @"Stopped";
         lyricsTextView.string = @"";
         [self transitToState:StatePolling];
     } else {
-        NSInteger dbID = [[iTunes currentTrack] databaseID];
+        NSInteger dbID = [iTunes databaseID];
         if (dbID != databaseID) { // track changed
             [self trackChanged];
             pos.line = -2;
@@ -112,7 +102,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
         if (lyrics != nil && [lyrics kind] != LyricsKindUnsynced) { // need to update markings
             double t = [iTunes playerPosition];
             // playerPosition is updated only about once per second
-            if (playerState == iTunesEPlSPlaying && t == prevPlayTime) { // not updated
+            if (playerState == PlayerStatePlaying && t == prevPlayTime) { // not updated
                 double diff = [prevPlayTimeDate timeIntervalSinceNow];
                 t -= diff;
             } else { // updated
@@ -157,7 +147,7 @@ typedef NS_ENUM(NSUInteger, AppState) {
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
-    iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
+    iTunes = [iTunesWrapper sharedInstance];
     [self transitToState:StatePolling];
     [window setLevel:NSNormalWindowLevel];
 }
