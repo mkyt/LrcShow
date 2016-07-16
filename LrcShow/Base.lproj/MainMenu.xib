@@ -12,11 +12,11 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="LrcShow" customModuleProvider="target">
             <connections>
-                <outlet property="lyricsTextView" destination="fyo-OC-ua4" id="VeP-lf-eO6"/>
-                <outlet property="scrollView" destination="hHG-JN-2gO" id="jxz-Il-8Rl"/>
-                <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
+                <outlet property="lyricsTextView" destination="fyo-OC-ua4" id="dgS-Og-NQr"/>
+                <outlet property="scrollView" destination="hHG-JN-2gO" id="HBT-KX-P9z"/>
+                <outlet property="window" destination="QvC-M9-y7g" id="3rD-NX-psI"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>

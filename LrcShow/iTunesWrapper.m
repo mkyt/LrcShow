@@ -54,7 +54,6 @@ iTunesApplication *iTunes;
 - (nullable NSURL*)location {
     iTunesFileTrack *track = (iTunesFileTrack *)[[iTunes currentTrack] get];  // [iTunes currentTrack] returns iTunesTrack, not iTunesFileTrack, hence cannot get file path
     return [track location];
-
 }
 
 - (nullable NSString*)trackDescription {
@@ -64,7 +63,5 @@ iTunesApplication *iTunes;
     NSString *artist = [track artist];
     return [NSString stringWithFormat:@"%@ - %@ - %@", title, artist, album];
 }
-
-
 
 @end

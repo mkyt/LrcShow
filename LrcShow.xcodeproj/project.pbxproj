@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		456A25961AE34750005EA242 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 456A25951AE34750005EA242 /* AppDelegate.m */; };
+		454FF1301D39F10A007163D4 /* iTunesWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 454FF12F1D39F10A007163D4 /* iTunesWrapper.m */; };
+		454FF1331D39F88D007163D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454FF1321D39F88D007163D4 /* AppDelegate.swift */; };
+		454FF1351D39FFAE007163D4 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454FF1341D39FFAE007163D4 /* Lyrics.swift */; };
 		456A25981AE34750005EA242 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 456A25971AE34750005EA242 /* main.m */; };
 		456A259A1AE34750005EA242 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 456A25991AE34750005EA242 /* Images.xcassets */; };
 		456A259D1AE34750005EA242 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 456A259B1AE34750005EA242 /* MainMenu.xib */; };
 		456A25A91AE34750005EA242 /* LrcShowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 456A25A81AE34750005EA242 /* LrcShowTests.m */; };
 		456A25B31AE3477F005EA242 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 456A25B21AE3477F005EA242 /* ScriptingBridge.framework */; };
-		456A25B71AE35AA8005EA242 /* LSLyrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 456A25B61AE35AA8005EA242 /* LSLyrics.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,10 +28,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		454FF12E1D39F10A007163D4 /* iTunesWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunesWrapper.h; sourceTree = "<group>"; };
+		454FF12F1D39F10A007163D4 /* iTunesWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesWrapper.m; sourceTree = "<group>"; };
+		454FF1311D39F88D007163D4 /* LrcShow-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LrcShow-Bridging-Header.h"; sourceTree = "<group>"; };
+		454FF1321D39F88D007163D4 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		454FF1341D39FFAE007163D4 /* Lyrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
 		456A258F1AE34750005EA242 /* LrcShow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LrcShow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		456A25931AE34750005EA242 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		456A25941AE34750005EA242 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		456A25951AE34750005EA242 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		456A25971AE34750005EA242 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		456A25991AE34750005EA242 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		456A259C1AE34750005EA242 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -39,8 +43,6 @@
 		456A25A81AE34750005EA242 /* LrcShowTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LrcShowTests.m; sourceTree = "<group>"; };
 		456A25B21AE3477F005EA242 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		456A25B41AE347A8005EA242 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
-		456A25B51AE35AA8005EA242 /* LSLyrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSLyrics.h; sourceTree = "<group>"; };
-		456A25B61AE35AA8005EA242 /* LSLyrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSLyrics.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,13 +87,14 @@
 			isa = PBXGroup;
 			children = (
 				456A25B41AE347A8005EA242 /* iTunes.h */,
-				456A25941AE34750005EA242 /* AppDelegate.h */,
-				456A25951AE34750005EA242 /* AppDelegate.m */,
 				456A25991AE34750005EA242 /* Images.xcassets */,
 				456A259B1AE34750005EA242 /* MainMenu.xib */,
 				456A25921AE34750005EA242 /* Supporting Files */,
-				456A25B51AE35AA8005EA242 /* LSLyrics.h */,
-				456A25B61AE35AA8005EA242 /* LSLyrics.m */,
+				454FF12E1D39F10A007163D4 /* iTunesWrapper.h */,
+				454FF12F1D39F10A007163D4 /* iTunesWrapper.m */,
+				454FF1321D39F88D007163D4 /* AppDelegate.swift */,
+				454FF1311D39F88D007163D4 /* LrcShow-Bridging-Header.h */,
+				454FF1341D39FFAE007163D4 /* Lyrics.swift */,
 			);
 			path = LrcShow;
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 		456A25871AE34750005EA242 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Juzbox;
 				TargetAttributes = {
@@ -222,8 +226,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				456A25981AE34750005EA242 /* main.m in Sources */,
-				456A25B71AE35AA8005EA242 /* LSLyrics.m in Sources */,
-				456A25961AE34750005EA242 /* AppDelegate.m in Sources */,
+				454FF1351D39FFAE007163D4 /* Lyrics.swift in Sources */,
+				454FF1331D39F88D007163D4 /* AppDelegate.swift in Sources */,
+				454FF1301D39F10A007163D4 /* iTunesWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,11 +343,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = LrcShow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.juzbox.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "LrcShow/LrcShow-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -350,11 +358,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = LrcShow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.juzbox.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "LrcShow/LrcShow-Bridging-Header.h";
 			};
 			name = Release;
 		};

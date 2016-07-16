@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import <XCTest/XCTest.h>
-#import "LSLyrics.h"
 
 @interface LrcShowTests : XCTestCase
 
@@ -28,16 +27,6 @@
 
 - (void)testExample {
     // This is an example of a functional test case.
-    LSLyricsElements *lines = [[LSLyricsElements alloc] initWithContent:ContentLines];
-    LSLyricsElements *line1 = [[LSLyricsElements alloc] initWithContent:ContentElements];
-    LSLyricsElements *line2 = [[LSLyricsElements alloc] initWithContent:ContentElements];
-    [line1 addObject:[[LSLyricsElement alloc] initWithString:@"test1"]];
-    [line1 addObject:[[LSLyricsElement alloc] initWithString:@"test2"]];
-    [line2 addObject:[[LSLyricsElement alloc] initWithString:@"test1"]];
-    [line2 addObject:[[LSLyricsElement alloc] initWithString:@"test2"]];
-    [lines addObject:line1];
-    [lines addObject:line2];
-    NSLog(@"%@", [lines joinedElement]);
     XCTAssert(YES, @"Pass");
 }
 
