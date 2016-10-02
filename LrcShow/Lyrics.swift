@@ -9,9 +9,9 @@
 import Foundation
 
 enum LyricsKind: String {
-    case Karaoke = "kra"
-    case Synced = "lrc"
-    case Unsynced = "txt"
+    case karaoke = "kra"
+    case synced = "lrc"
+    case unsynced = "txt"
 }
 
 
@@ -41,10 +41,10 @@ class LyricsElement: LyricsChunk {
     convenience init(line s: String, match m: NSTextCheckingResult, startPos p: Int) {
         // [mm:ss:cc]text
         let nsS = s as NSString
-        let min = nsS.substringWithRange(m.rangeAtIndex(1))
-        let sec = nsS.substringWithRange(m.rangeAtIndex(2))
-        let cenSec = nsS.substringWithRange(m.rangeAtIndex(3))
-        let text = nsS.substringWithRange(m.rangeAtIndex(4))
+        let min = nsS.substring(with: m.rangeAt(1))
+        let sec = nsS.substring(with: m.rangeAt(2))
+        let cenSec = nsS.substring(with: m.rangeAt(3))
+        let text = nsS.substring(with: m.rangeAt(4))
         var time: Double = 0.0
         time += 60 * Double(min)!
         time += Double(sec)!
@@ -59,7 +59,7 @@ class LyricsLine: LyricsChunk {
     init?(karaokeLine line:String, startPos p: Int) {
         elements = []
         let re = try! NSRegularExpression(pattern: "\\[(\\d{2}):(\\d{2}):(\\d{2})\\]([^\\[]*)", options: [])
-        let matches = re.matchesInString(line, options: [], range: NSMakeRange(0, line.characters.count))
+        let matches = re.matches(in: line, options: [], range: NSMakeRange(0, line.characters.count))
         if matches.count == 0 {
             return nil
         }
@@ -74,7 +74,7 @@ class LyricsLine: LyricsChunk {
     init?(syncedLine line: String, startPos p: Int) {
         elements = []
         let re = try! NSRegularExpression(pattern: "^\\[(\\d{2}):(\\d{2}):(\\d{2})\\](.*)$", options: [])
-        let match = re.firstMatchInString(line, options: [], range: NSMakeRange(0, line.characters.count))
+        let match = re.firstMatch(in: line, options: [], range: NSMakeRange(0, line.characters.count))
         if let match = match {
             elements.append(LyricsElement(line: line, match: match, startPos: p))
         } else {
@@ -89,7 +89,7 @@ class LyricsLine: LyricsChunk {
     }
     
     var text: String {
-        return elements.map{ $0.text }.joinWithSeparator("")
+        return elements.map{ $0.text }.joined(separator: "")
     }
     
     var timeCode: Double {
@@ -133,41 +133,41 @@ class LyricsFile {
 
     var text: String {
         if _text == nil {
-            _text = lines.map{ $0.text }.joinWithSeparator("\n")
+            _text = lines.map{ $0.text }.joined(separator: "\n")
         }
         return _text!
     }
     
-    init(file fileURL: NSURL) {
-        rawContent = try! String.init(contentsOfURL: fileURL)
+    init(file fileURL: URL) {
+        rawContent = try! String.init(contentsOf: fileURL)
         lines = []
         searchIndex = []
         _text = nil
     }
     
-    class func lyricsForMusicFileURL(_ musicFileURL: NSURL) -> LyricsFile? {
-        let pathWoExt: NSString = (musicFileURL.path! as NSString).stringByDeletingPathExtension
-        let fm = NSFileManager.defaultManager()
-        for ext in [LyricsKind.Karaoke, LyricsKind.Synced, LyricsKind.Unsynced] {
-            let candidatePath = pathWoExt.stringByAppendingPathExtension(ext.rawValue)!
-            if (fm.fileExistsAtPath(candidatePath)) {
+    class func lyricsForMusicFileURL(_ musicFileURL: URL) -> LyricsFile? {
+        let pathWoExt: NSString = (musicFileURL.path as NSString).deletingPathExtension as NSString
+        let fm = FileManager.default
+        for ext in [LyricsKind.karaoke, LyricsKind.synced, LyricsKind.unsynced] {
+            let candidatePath = pathWoExt.appendingPathExtension(ext.rawValue)!
+            if (fm.fileExists(atPath: candidatePath)) {
                 switch ext {
-                case .Karaoke:
-                    return KaraokeLyricsFile(file: NSURL.fileURLWithPath(candidatePath))
-                case .Synced:
-                    return SyncedLyricsFile(file: NSURL.fileURLWithPath(candidatePath))
+                case .karaoke:
+                    return KaraokeLyricsFile(file: URL(fileURLWithPath: candidatePath))
+                case .synced:
+                    return SyncedLyricsFile(file: URL(fileURLWithPath: candidatePath))
                     
-                case .Unsynced:
-                    return UnsyncedLyricsFile(file: NSURL.fileURLWithPath(candidatePath))
+                case .unsynced:
+                    return UnsyncedLyricsFile(file: URL(fileURLWithPath: candidatePath))
                 }
             }
         }
         return nil
     }
-    var kind: LyricsKind { return .Unsynced }
+    var kind: LyricsKind { return .unsynced }
     
     func position(time target: Double) -> LyricsPosition {
-        if kind == .Unsynced {
+        if kind == .unsynced {
             return (0, 0, 0)
         }
         if searchIndex.count < 1 || target < searchIndex[0].0 {
@@ -185,7 +185,7 @@ class LyricsFile {
         }
         let lineIndex = searchIndex[lo].1
         let elemIndex = searchIndex[lo].2
-        if kind == .Synced {
+        if kind == .synced {
             return (lineIndex, elemIndex, 0)
         }
         // Karaoke
@@ -226,7 +226,7 @@ class LyricsFile {
         res.futureLines = NSMakeRange(futureLineStart, endPos - futureLineStart)
         res.finishedChunkInCurrentLine = NSMakeRange(0, 0)
         res.futureChunkInCurrentLine = NSMakeRange(0, 0)
-        if kind == .Karaoke {
+        if kind == .karaoke {
             let elem = line.elements[pos.elem]
             let offset = pos.char
             res.finishedChunkInCurrentLine = NSMakeRange(line.range.location, elem.range.location - line.range.location + offset)
@@ -237,10 +237,10 @@ class LyricsFile {
 }
 
 class KaraokeLyricsFile: LyricsFile {
-    override init(file fileURL: NSURL) {
+    override init(file fileURL: URL) {
         super.init(file: fileURL)
         var p = 0
-        for rawLine in rawContent.componentsSeparatedByString("\n") {
+        for rawLine in rawContent.components(separatedBy: "\n") {
             let line = LyricsLine(karaokeLine: rawLine, startPos: p)
             if let line = line {
                 lines.append(line)
@@ -248,21 +248,21 @@ class KaraokeLyricsFile: LyricsFile {
                 p += 1 // new line
             }
         }
-        for (i, line) in lines.enumerate() {
-            for (j, elem) in line.elements.enumerate() {
+        for (i, line) in lines.enumerated() {
+            for (j, elem) in line.elements.enumerated() {
                 searchIndex.append((elem.timeCode, i, j))
             }
         }
     }
     
-    override var kind: LyricsKind { return .Karaoke }
+    override var kind: LyricsKind { return .karaoke }
 }
 
 class SyncedLyricsFile: LyricsFile {
-    override init(file fileURL: NSURL) {
+    override init(file fileURL: URL) {
         super.init(file: fileURL)
         var p = 0
-        for rawLine in rawContent.componentsSeparatedByString("\n") {
+        for rawLine in rawContent.components(separatedBy: "\n") {
             let line = LyricsLine(syncedLine: rawLine, startPos: p)
             if let line = line {
                 lines.append(line)
@@ -270,23 +270,23 @@ class SyncedLyricsFile: LyricsFile {
                 p += 1 // new line
             }
         }
-        for (i, line) in lines.enumerate() {
+        for (i, line) in lines.enumerated() {
             searchIndex.append((line.timeCode, i, 0))
         }
     }
     
-    override var kind: LyricsKind { return .Synced }
+    override var kind: LyricsKind { return .synced }
 }
 
 class UnsyncedLyricsFile: LyricsFile {
-    override init(file fileURL: NSURL) {
+    override init(file fileURL: URL) {
         super.init(file: fileURL)
-        for line in rawContent.componentsSeparatedByString("\n") {
+        for line in rawContent.components(separatedBy: "\n") {
             lines.append(LyricsLine(unsyncedLine: line))
         }
     }
     
-    override var kind: LyricsKind { return .Unsynced }
+    override var kind: LyricsKind { return .unsynced }
 }
 
 

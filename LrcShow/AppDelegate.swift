@@ -13,33 +13,33 @@ let PlayingInterval = 0.1
 let AnimationDuration = 0.5
 
 enum AppState {
-    case Polling
-    case Playback
+    case polling
+    case playback
 }
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     let iTunes = iTunesWrapper.sharedInstance()!
-    var state: AppState = .Polling
-    var timer: NSTimer?
+    var state: AppState = .polling
+    var timer: Timer?
     var databaseID: Int = -1
     var lyrics: LyricsFile?
     var prevPlayTime: Double = -1
-    var prevPlayTimeDate: NSDate?
+    var prevPlayTimeDate: Date?
     var prevPosition: LyricsPosition?
     
     @IBOutlet weak var window: NSPanel!
     @IBOutlet weak var scrollView: NSScrollView!
     @IBOutlet var lyricsTextView: NSTextView!
 
-    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
     
-    func applicationDidFinishLaunching(notification: NSNotification) {
-        window.level = Int(CGWindowLevelForKey(CGWindowLevelKey.NormalWindowLevelKey))
-        self.transit(state: .Polling)
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        window.level = Int(CGWindowLevelForKey(CGWindowLevelKey.normalWindow))
+        self.transit(state: .polling)
     }
     
     func transit(state newState:AppState) {
@@ -50,47 +50,47 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         var interval: Double
         var sel: Selector
         switch (state) {
-        case .Polling:
+        case .polling:
             interval = PollingInterval
             sel = #selector(self.polling(_:))
-        case .Playback:
+        case .playback:
             interval = PlayingInterval
             sel = #selector(self.playing(_:))
         }
-        timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: sel, userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: sel, userInfo: nil, repeats: true)
     }
     
-    func polling(_ t: NSTimer) {
-        if iTunes.state() != .Stopped {
+    func polling(_ t: Timer) {
+        if iTunes.state() != .stopped {
             t.invalidate()
             self.timer = nil
             trackChanged()
-            transit(state: .Playback)
+            transit(state: .playback)
         }
     }
     
-    func playing(_ t: NSTimer) {
+    func playing(_ t: Timer) {
         let playerState = iTunes.state()
-        if playerState == .Stopped {
+        if playerState == .stopped {
             timer?.invalidate()
             timer = nil
             window.title = "Stopped"
             lyricsTextView.string = ""
-            transit(state: .Polling)
+            transit(state: .polling)
         } else {
             let dbID = iTunes.databaseID()
             if databaseID != dbID {
                 trackChanged()
                 return
             }
-            if let lyrics = lyrics where lyrics.kind != .Unsynced {
+            if let lyrics = lyrics , lyrics.kind != .unsynced {
                 var time = iTunes.playerPosition()
-                if playerState == .Playing && time == prevPlayTime { // not updated though playback is on the way
+                if playerState == .playing && time == prevPlayTime { // not updated though playback is on the way
                     let diff = prevPlayTimeDate!.timeIntervalSinceNow
                     time -= diff
                 } else { // updated
                     prevPlayTime = time
-                    prevPlayTimeDate = NSDate()
+                    prevPlayTimeDate = Date()
                 }
                 let pos = lyrics.position(time: time)
                 if prevPosition == nil || (prevPosition != nil && pos != prevPosition!) {
@@ -98,11 +98,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         scroll(toLine: pos.line)
                     }
                     let marking = lyrics.marking(position: pos)
-                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.grayColor()], range: marking.finishedLines)
-                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.orangeColor()], range: marking.currentLine)
-                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.whiteColor()], range: marking.futureLines)
-                    if lyrics.kind == .Karaoke {
-                        lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.grayColor()], range: marking.finishedChunkInCurrentLine)
+                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.gray], range: marking.finishedLines)
+                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.orange], range: marking.currentLine)
+                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.white], range: marking.futureLines)
+                    if lyrics.kind == .karaoke {
+                        lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.gray], range: marking.finishedChunkInCurrentLine)
                    }
                     prevPosition = pos
                 }
@@ -118,7 +118,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         lyrics = LyricsFile.lyricsForMusicFileURL(url)
         if let lyrics = lyrics {
             lyricsTextView.string = lyrics.text
-            lyricsTextView.textColor = NSColor.whiteColor()
+            lyricsTextView.textColor = NSColor.white
         } else {
             lyricsTextView.string = ""
         }
@@ -148,7 +148,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             to = lineHeight * CGFloat(lineNo) - clipHeight / 2
         }
         NSAnimationContext.beginGrouping()
-        NSAnimationContext.currentContext().duration = AnimationDuration
+        NSAnimationContext.current().duration = AnimationDuration
         var origin = clipView.bounds.origin
         origin.y = to
         clipView.animator().setBoundsOrigin(origin)

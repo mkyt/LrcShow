@@ -15,7 +15,7 @@
 iTunesApplication *iTunes;
 
 
-+ (instancetype)sharedInstance {
++ (nullable instancetype)sharedInstance {
     static iTunesWrapper* instance = nil;
     @synchronized (self) {
         if (!instance) {
@@ -25,7 +25,7 @@ iTunesApplication *iTunes;
     return instance;
 }
 
-- (instancetype)init {
+- (nullable instancetype)init {
     if (self = [super init]) {
         iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
     }
