@@ -129,14 +129,20 @@ class LyricsFile {
     var rawContent: String
     var lines: [LyricsLine]
     var searchIndex: [SearchIndexEntry]
+    var _text: String?
+
     var text: String {
-        return lines.map{ $0.text }.joinWithSeparator("\n")
+        if _text == nil {
+            _text = lines.map{ $0.text }.joinWithSeparator("\n")
+        }
+        return _text!
     }
     
     init(file fileURL: NSURL) {
         rawContent = try! String.init(contentsOfURL: fileURL)
         lines = []
         searchIndex = []
+        _text = nil
     }
     
     class func lyricsForMusicFileURL(_ musicFileURL: NSURL) -> LyricsFile? {
@@ -164,7 +170,7 @@ class LyricsFile {
         if kind == .Unsynced {
             return (0, 0, 0)
         }
-        if target < searchIndex[0].0 {
+        if searchIndex.count < 1 || target < searchIndex[0].0 {
             return (-1, 0, 0)
         }
         var lo = 0, hi = searchIndex.count
