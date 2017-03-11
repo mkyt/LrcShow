@@ -2,53 +2,43 @@
 
 <img src="https://raw.github.com/wiki/mkyt/LrcShow/images/ss.jpg" width="340px">
 
-### これは何?
-iTunesで再生中の曲の（同期）歌詞を表示します．
+## What is this?
+LrcShow displays synchronized lyrics for iTunes songs on macOS.
 
 
-### 使い方
+## Usage
 
-#### 歌詞ファイルの仕様
+### Lyrics file specifications
+Lyrics files are plain text encoded in UTF-8. LrcShow supports three types of lyrics files, namely, **karaoke-sync** (timecodes added to the fragments of lyrics; suffix `.kra`), **line-sync** (timecodes only at the beginning of the lines; suffix `.lrc`) and **unsynchronized** (plain text with no timecodes; suffix `.txt`).
 
-対応している歌詞ファイルは，カラオケ同期（行中のフラグメントにタイムコードが付与），行同期（各行にタイムコードが付与），非同期（タイムコードなし）の3種類です．
-歌詞ファイルはutf-8でエンコードされたplain textで，拡張子はカラオケ同期歌詞は`.kra`，行同期歌詞は`.lrc`，非同期歌詞は`.txt`とします．
-タイムコードの仕様は（最も一般に普及していると思われる）`[mm:ss:cc]`（分，秒，1/100秒それぞれ半角数字2桁）の形式です．
+Timecodes are formatted as `[mm:ss:cc]` (2-digits each for minutes, seconds and centiseconds).
 
-###### カラオケ同期ファイルの例
-
-```
-...
-[00:33:15]肝心な[00:35:19]コトバ[00:36:79]が[00:37:38]いつも[00:39:50]言え[00:40:29]なく[00:40:90]て
-...
-```
-
-カラオケ同期ファイルでは，行頭だけでなく，行中にもタイムコードを付与することができます．（行頭のタイムコードは必須．）
-例えば，上の例では，`[00:35:19]`というタイムコードが「コトバ」というフレーズの開始時間に対応していると解釈されます．
-
-
-###### 行同期ファイルの例
+#### Example of karaoke-sync file
 
 ```
 ...
-[02:04:58]寝ても覚めても
+[01:11:09]And [01:11:43]that's [01:11:70]what [01:12:01]they [01:12:22]don't [01:12:36]see
 ...
 ```
 
-行同期ファイルでは，行頭のみにタイムコードが付加されています．
+In karaoke-sync (`.kra`) files, timecodes are added not only at the beginning but also in the middle of the lines. In the above example, timecode `[01:11:70]` corresponds to the beginning of the phrase 'what'.
+
+#### Example of line-sync file
+
+```
+...
+[00:40:39]Surely not what you thought it
+...
+```
+
+In line-sync (`.lrc`) files, timecodes are added only at the beginning of the lines.
 
 
-#### 歌詞ファイルの検索場所
+### Lyrics file search location
+Lyrics files must be placed in the same directory and basenames (names without suffix) must be the same as the corresponding music file (e.g. when playing `.../Music/Fastball/All The Pain Money Can Buy/01 The Way.mp3`, files `01 The Way.kra`, `01 The Way.lrc` and `01 The Way.txt` inside the directory `.../Music/Fastball/All The Pain Money Can Buy` are candidate paths for the lyrics files).
 
-音楽ファイルと同じディレクトリで，拡張子を`.kra`.（カラオケ同期），`.lrc`（行同期），`.txt`（非同期）に置き換えたファイルが歌詞として読み込まれます．候補のファイルが複数存在する場合は，
-情報量が多いものから`.kra`，`.lrc`，`.txt`の順に優先して読み込まれます．
-音楽ファイル内のメタデータに保存されている歌詞データには対応していません．
-
-例えば，
-`.../Music/Fastball/All The Pain Money Can Buy/01. The Way.mp3`
-というパスの音楽ファイルに対応する歌詞ファイルは，
-ディレクトリ`.../Music/Fastball/All The Pain Money Can Buy`の中の
-`01. The Way.kra`，`01. The Way.lrc`，`01. The Way.txt`になります．
+Loading lyrics data from metadata (ID3v2, APE, MP4, etc) embedded in music files is not supported.
 
 
-## ライセンス
+## License
 MIT
