@@ -28,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var prevPlayTime: Double = -1
     var prevPlayTimeDate: Date?
     var prevPosition: LyricsPosition?
+    var prevPositionScroll: LyricsPosition?
     
     @IBOutlet weak var window: NSPanel!
     @IBOutlet weak var scrollView: NSScrollView!
@@ -93,10 +94,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     prevPlayTimeDate = Date()
                 }
                 let pos = lyrics.position(time: time)
+                let posScroll = lyrics.position(time: time + AnimationDuration / 2)
+                if prevPositionScroll == nil || (prevPositionScroll != nil && posScroll.line != prevPositionScroll!.line) {
+                    scroll(toLine: posScroll.line)
+                    prevPositionScroll = posScroll
+                }
                 if prevPosition == nil || (prevPosition != nil && pos != prevPosition!) {
-                    if prevPosition == nil || (pos.line != prevPosition!.line) {
-                        scroll(toLine: pos.line)
-                    }
                     let marking = lyrics.marking(position: pos)
                     lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.gray], range: marking.finishedLines)
                     lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.orange], range: marking.currentLine)
@@ -106,7 +109,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                    }
                     prevPosition = pos
                 }
-                
             }
         }
     }
@@ -147,11 +149,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             to = lineHeight * CGFloat(lineNo) - clipHeight / 2
         }
-        NSAnimationContext.beginGrouping()
-        NSAnimationContext.current().duration = AnimationDuration
         var origin = clipView.bounds.origin
-        origin.y = to
-        clipView.animator().setBoundsOrigin(origin)
-        NSAnimationContext.endGrouping()
+        if origin.y != to {
+            NSAnimationContext.beginGrouping()
+            NSAnimationContext.current().duration = AnimationDuration
+            origin.y = to
+            clipView.animator().setBoundsOrigin(origin)
+            NSAnimationContext.endGrouping()
+        }
     }
 }
