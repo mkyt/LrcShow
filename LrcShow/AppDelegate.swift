@@ -39,7 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        window.level = Int(CGWindowLevelForKey(CGWindowLevelKey.normalWindow))
+        window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.normalWindow)))
         self.transit(state: .polling)
     }
     
@@ -61,7 +61,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: sel, userInfo: nil, repeats: true)
     }
     
-    func polling(_ t: Timer) {
+    @objc func polling(_ t: Timer) {
         if iTunes.state() != .stopped {
             t.invalidate()
             self.timer = nil
@@ -70,7 +70,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    func playing(_ t: Timer) {
+    @objc func playing(_ t: Timer) {
         let playerState = iTunes.state()
         if playerState == .stopped {
             timer?.invalidate()
@@ -101,11 +101,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
                 if prevPosition == nil || (prevPosition != nil && pos != prevPosition!) {
                     let marking = lyrics.marking(position: pos)
-                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.gray], range: marking.finishedLines)
-                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.orange], range: marking.currentLine)
-                    lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.white], range: marking.futureLines)
+                    lyricsTextView.textStorage?.addAttributes([.foregroundColor: NSColor.gray], range: marking.finishedLines)
+                    lyricsTextView.textStorage?.addAttributes([.foregroundColor: NSColor.orange], range: marking.currentLine)
+                    lyricsTextView.textStorage?.addAttributes([.foregroundColor: NSColor.white], range: marking.futureLines)
                     if lyrics.kind == .karaoke {
-                        lyricsTextView.textStorage?.addAttributes([NSForegroundColorAttributeName: NSColor.gray], range: marking.finishedChunkInCurrentLine)
+                        lyricsTextView.textStorage?.addAttributes([.foregroundColor: NSColor.gray], range: marking.finishedChunkInCurrentLine)
                    }
                     prevPosition = pos
                 }
@@ -120,7 +120,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         lyrics = LyricsFile.lyricsForMusicFileURL(url)
         if let lyrics = lyrics {
             lyricsTextView.string = lyrics.text
-            lyricsTextView.textColor = NSColor.white
+            lyricsTextView.textColor = .white
         } else {
             lyricsTextView.string = ""
         }
@@ -152,7 +152,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         var origin = clipView.bounds.origin
         if origin.y != to {
             NSAnimationContext.beginGrouping()
-            NSAnimationContext.current().duration = AnimationDuration
+            NSAnimationContext.current.duration = AnimationDuration
             origin.y = to
             clipView.animator().setBoundsOrigin(origin)
             NSAnimationContext.endGrouping()

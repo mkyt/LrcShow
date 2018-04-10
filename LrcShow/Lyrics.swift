@@ -31,7 +31,7 @@ class LyricsElement: LyricsChunk {
     init(text s: String, timeCode c: Double, startPos p: Int) {
         text = s
         timeCode = c
-        range = NSMakeRange(p, s.characters.count)
+        range = NSMakeRange(p, s.count)
     }
     
     convenience init(text s: String, startPos p: Int) {
@@ -41,10 +41,10 @@ class LyricsElement: LyricsChunk {
     convenience init(line s: String, match m: NSTextCheckingResult, startPos p: Int) {
         // [mm:ss:cc]text
         let nsS = s as NSString
-        let min = nsS.substring(with: m.rangeAt(1))
-        let sec = nsS.substring(with: m.rangeAt(2))
-        let cenSec = nsS.substring(with: m.rangeAt(3))
-        let text = nsS.substring(with: m.rangeAt(4))
+        let min = nsS.substring(with: m.range(at: 1))
+        let sec = nsS.substring(with: m.range(at: 2))
+        let cenSec = nsS.substring(with: m.range(at: 3))
+        let text = nsS.substring(with: m.range(at: 4))
         var time: Double = 0.0
         time += 60 * Double(min)!
         time += Double(sec)!
@@ -59,7 +59,7 @@ class LyricsLine: LyricsChunk {
     init?(karaokeLine line:String, startPos p: Int) {
         elements = []
         let re = try! NSRegularExpression(pattern: "\\[(\\d{2}):(\\d{2}):(\\d{2})\\]([^\\[]*)", options: [])
-        let matches = re.matches(in: line, options: [], range: NSMakeRange(0, line.characters.count))
+        let matches = re.matches(in: line, options: [], range: NSMakeRange(0, line.count))
         if matches.count == 0 {
             return nil
         }
@@ -67,14 +67,14 @@ class LyricsLine: LyricsChunk {
         for match in matches {
             let elem = LyricsElement(line: line, match: match, startPos: cur)
             elements.append(elem)
-            cur += elem.text.characters.count
+            cur += elem.text.count
         }
     }
     
     init?(syncedLine line: String, startPos p: Int) {
         elements = []
         let re = try! NSRegularExpression(pattern: "^\\[(\\d{2}):(\\d{2}):(\\d{2})\\](.*)$", options: [])
-        let match = re.firstMatch(in: line, options: [], range: NSMakeRange(0, line.characters.count))
+        let match = re.firstMatch(in: line, options: [], range: NSMakeRange(0, line.count))
         if let match = match {
             elements.append(LyricsElement(line: line, match: match, startPos: p))
         } else {
@@ -195,12 +195,12 @@ class LyricsFile {
         if elemIndex < lines[lineIndex].elements.count - 1 {
             let nextElem = lines[lineIndex].elements[elemIndex + 1]
             let end = nextElem.timeCode
-            let timePerChar = (end - start) / Double(elem.text.characters.count)
+            let timePerChar = (end - start) / Double(elem.text.count)
             charIndex = Int((target - start) / timePerChar)
         } else if lineIndex < lines.count - 1 { // last element in current line
             let nextElem = lines[lineIndex + 1].elements[0]
             let end = nextElem.timeCode
-            let timePerChar = (end - start) / Double(elem.text.characters.count)
+            let timePerChar = (end - start) / Double(elem.text.count)
             charIndex = Int((target - start) / timePerChar)
         } else { // last element of the whole lyrics
             charIndex = 0
@@ -210,7 +210,7 @@ class LyricsFile {
     
     func marking(position pos: LyricsPosition) -> LyricsMarking {
         var res: LyricsMarking
-        let endPos = text.characters.count
+        let endPos = text.count
         if pos.line < 0 {
             res.finishedLines = NSMakeRange(0, 0)
             res.currentLine = NSMakeRange(0, 0)
@@ -244,7 +244,7 @@ class KaraokeLyricsFile: LyricsFile {
             let line = LyricsLine(karaokeLine: rawLine, startPos: p)
             if let line = line {
                 lines.append(line)
-                p += line.text.characters.count
+                p += line.text.count
                 p += 1 // new line
             }
         }
@@ -266,7 +266,7 @@ class SyncedLyricsFile: LyricsFile {
             let line = LyricsLine(syncedLine: rawLine, startPos: p)
             if let line = line {
                 lines.append(line)
-                p += line.text.characters.count
+                p += line.text.count
                 p += 1 // new line
             }
         }
