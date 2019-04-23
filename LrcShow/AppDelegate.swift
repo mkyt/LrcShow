@@ -32,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet weak var window: NSPanel!
     @IBOutlet weak var scrollView: NSScrollView!
+    @IBOutlet weak var visualEffectView: NSVisualEffectView!
     @IBOutlet var lyricsTextView: NSTextView!
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -54,7 +55,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
         
-        window.level = .normal
+        visualEffectView.blendingMode = .behindWindow
+        visualEffectView.state = .active
+        if #available(macOS 10.14, *) {
+            visualEffectView.material = .sheet
+        } else {
+            visualEffectView.material = .dark
+        }
+
+        window.level = .floating
         self.transit(state: .polling)
     }
     
