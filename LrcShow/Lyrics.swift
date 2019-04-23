@@ -58,7 +58,7 @@ class LyricsLine: LyricsChunk {
     
     init?(karaokeLine line:String, startPos p: Int) {
         elements = []
-        let re = try! NSRegularExpression(pattern: "\\[(\\d{2}):(\\d{2}):(\\d{2})\\]([^\\[]*)", options: [])
+        let re = try! NSRegularExpression(pattern: "[\\[<](\\d{2}):(\\d{2})[:\\.](\\d{2})[\\]>]([^\\[<]*)", options: [])
         let matches = re.matches(in: line, options: [], range: NSMakeRange(0, line.count))
         if matches.count == 0 {
             return nil
@@ -73,7 +73,7 @@ class LyricsLine: LyricsChunk {
     
     init?(syncedLine line: String, startPos p: Int) {
         elements = []
-        let re = try! NSRegularExpression(pattern: "^\\[(\\d{2}):(\\d{2}):(\\d{2})\\](.*)$", options: [])
+        let re = try! NSRegularExpression(pattern: "^\\[(\\d{2}):(\\d{2})[:\\.](\\d{2})\\](.*)$", options: [])
         let match = re.firstMatch(in: line, options: [], range: NSMakeRange(0, line.count))
         if let match = match {
             elements.append(LyricsElement(line: line, match: match, startPos: p))
