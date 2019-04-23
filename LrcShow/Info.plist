@@ -32,6 +32,8 @@
 	<string>Copyright © 2015 Juzbox. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>This app needs your permission to obtain playback information.</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>

@@ -39,6 +39,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        if #available(macOS 10.14, *) {
+            // Need to deal w/ AppleEvent sandboxing
+            let targetAEDescriptor = NSAppleEventDescriptor(bundleIdentifier: "com.apple.iTunes")
+            let status = AEDeterminePermissionToAutomateTarget(targetAEDescriptor.aeDesc, typeWildCard, typeWildCard, true)
+            
+            if status != noErr {
+                let alert = NSAlert()
+                alert.messageText = "AppleEvent Authentication failed"
+                alert.alertStyle = .warning
+                alert.runModal()
+                NSApp.terminate(self)
+                return
+            }
+        }
+        
         window.level = .normal
         self.transit(state: .polling)
     }
