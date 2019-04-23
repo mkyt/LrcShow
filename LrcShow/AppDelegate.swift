@@ -39,7 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.normalWindow)))
+        window.level = .normal
         self.transit(state: .polling)
     }
     
@@ -116,8 +116,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func trackChanged() {
         window.title = iTunes.trackDescription()!
         databaseID = iTunes.databaseID()
-        let url = iTunes.location()!
-        lyrics = LyricsFile.lyricsForMusicFileURL(url)
+        let url: URL? = iTunes.location()
+        lyrics = url != nil ? LyricsFile.lyricsForMusicFileURL(url!) : nil;
         if let lyrics = lyrics {
             lyricsTextView.string = lyrics.text
             lyricsTextView.textColor = .white
