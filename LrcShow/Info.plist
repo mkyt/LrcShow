@@ -29,7 +29,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2015 Juzbox. All rights reserved.</string>
+	<string>Copyright © 2015-2020 Juzbox. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSAppleEventsUsageDescription</key>
