@@ -41,6 +41,7 @@
 		456A25A81AE34750005EA242 /* LrcShowTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LrcShowTests.m; sourceTree = "<group>"; };
 		456A25B21AE3477F005EA242 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		456A25B41AE347A8005EA242 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		457CDF8A2588EB9900475C28 /* Music.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +85,7 @@
 		456A25911AE34750005EA242 /* LrcShow */ = {
 			isa = PBXGroup;
 			children = (
-				456A25B41AE347A8005EA242 /* iTunes.h */,
+				457CDF8D2588F24400475C28 /* ScriptingBridge Headers */,
 				456A25991AE34750005EA242 /* Images.xcassets */,
 				456A259B1AE34750005EA242 /* MainMenu.xib */,
 				456A25921AE34750005EA242 /* Supporting Files */,
@@ -120,6 +121,15 @@
 				456A25A71AE34750005EA242 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		457CDF8D2588F24400475C28 /* ScriptingBridge Headers */ = {
+			isa = PBXGroup;
+			children = (
+				457CDF8A2588EB9900475C28 /* Music.h */,
+				456A25B41AE347A8005EA242 /* iTunes.h */,
+			);
+			name = "ScriptingBridge Headers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,6 +197,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);

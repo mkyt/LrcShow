@@ -20,7 +20,7 @@ enum AppState {
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    let iTunes = iTunesWrapper.sharedInstance()!
+    var iTunes: PlayerWrapper?
     var state: AppState = .polling
     var timer: Timer?
     var databaseID: Int = -1
@@ -42,7 +42,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         if #available(macOS 10.14, *) {
             // Need to deal w/ AppleEvent sandboxing
-            let targetAEDescriptor = NSAppleEventDescriptor(bundleIdentifier: "com.apple.iTunes")
+            var appBundle: String
+            if #available(macOS 10.15, *) {
+                appBundle = "com.apple.Music"
+            } else {
+                appBundle = "com.apple.iTunes"
+            }
+            let targetAEDescriptor = NSAppleEventDescriptor(bundleIdentifier: appBundle)
             let status = AEDeterminePermissionToAutomateTarget(targetAEDescriptor.aeDesc, typeWildCard, typeWildCard, true)
             
             if status != noErr {
@@ -54,6 +60,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 return
             }
         }
+        
+        iTunes = PlayerWrapper.sharedInstance()!
         
         visualEffectView.blendingMode = .behindWindow
         visualEffectView.state = .active
@@ -86,7 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func polling(_ t: Timer) {
-        if iTunes.state() != .stopped {
+        if iTunes?.state() != .stopped {
             t.invalidate()
             self.timer = nil
             trackChanged()
@@ -95,6 +103,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func playing(_ t: Timer) {
+        guard let iTunes = iTunes else { return }
         let playerState = iTunes.state()
         if playerState == .stopped {
             timer?.invalidate()
@@ -138,6 +147,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func trackChanged() {
+        guard let iTunes = iTunes else { return }
         window.title = iTunes.trackDescription()!
         databaseID = iTunes.databaseID()
         let url: URL? = iTunes.location()

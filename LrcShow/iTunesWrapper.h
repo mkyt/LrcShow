@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, PlayerState) {
     PlayerStatePause
 };
 
-@interface iTunesWrapper : NSObject
+@interface PlayerWrapper : NSObject
 
 + (nullable instancetype)sharedInstance;
 
@@ -25,4 +25,10 @@ typedef NS_ENUM(NSInteger, PlayerState) {
 - (nullable NSURL*)location;
 - (nullable NSString*)trackDescription;
 
+@end
+
+@interface iTunesWrapper : PlayerWrapper
+@end
+
+@interface MusicWrapper : PlayerWrapper
 @end
